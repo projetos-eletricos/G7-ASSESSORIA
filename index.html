@@ -34,7 +34,355 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+/* =============================================================================
+   G7 ASSESSORIA — Folha de estilo (mobile-first)
+   As cores vêm de js/config.js e são aplicadas como variáveis CSS no carregamento.
+   Os valores abaixo são apenas fallbacks caso o JS não execute.
+   ========================================================================== */
+
+:root {
+  --dark: #15171b;
+  --dark-2: #1e2128;
+  --gold: #c4a052;
+  --gold-light: #d8bd7a;
+  --silver: #c9cdd2;
+  --navy: #0f2440;
+  --bg-light: #f7f8fa;
+  --text: #1f2228;
+  --text-muted: #5a6270;
+  --white: #ffffff;
+
+  --maxw: 1180px;
+  --radius: 14px;
+  --shadow-sm: 0 2px 10px rgba(15, 23, 42, .06);
+  --shadow-md: 0 12px 32px rgba(15, 23, 42, .10);
+  --shadow-lg: 0 24px 60px rgba(15, 23, 42, .16);
+  --font-head: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --header-h: 74px;
+}
+
+/* --- Reset ----------------------------------------------------------------*/
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.65;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; line-height: 1.18; margin: 0 0 .5em; letter-spacing: .2px; }
+h1 { font-size: clamp(2rem, 5.2vw, 3.4rem); }
+h2 { font-size: clamp(1.7rem, 3.8vw, 2.6rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0 0 1rem; }
+
+/* --- Utilidades -----------------------------------------------------------*/
+.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+.section { padding: 72px 0; }
+.section--tight { padding: 56px 0; }
+.bg-light { background: var(--bg-light); }
+.bg-dark { background: var(--dark); color: #e8eaee; }
+.bg-dark h1, .bg-dark h2, .bg-dark h3 { color: #fff; }
+.center { text-align: center; }
+.eyebrow {
+  display: inline-block; font-family: var(--font-body); font-weight: 600;
+  font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+.bg-dark .eyebrow { color: var(--gold-light); }
+.lead { font-size: 1.12rem; color: var(--text-muted); max-width: 60ch; }
+.center .lead { margin-left: auto; margin-right: auto; }
+.gold-text { color: var(--gold); }
+.divider-mini { width: 56px; height: 3px; background: var(--gold); border-radius: 3px; margin: 0 0 22px; }
+.center .divider-mini { margin-left: auto; margin-right: auto; }
+
+/* --- Botões ---------------------------------------------------------------*/
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+  padding: 15px 28px; border-radius: 50px; cursor: pointer; border: 2px solid transparent;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  text-align: center; line-height: 1;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn--primary { background: var(--gold); color: #1a1408; box-shadow: 0 10px 24px rgba(196,160,82,.35); }
+.btn--primary:hover { background: var(--gold-light); }
+.btn--whatsapp { background: #25D366; color: #06351c; box-shadow: 0 10px 24px rgba(37,211,102,.32); }
+.btn--whatsapp:hover { background: #2eea73; }
+.btn--ghost { background: transparent; border-color: var(--gold); color: var(--gold); }
+.btn--ghost:hover { background: var(--gold); color: #1a1408; }
+.btn--light-outline { background: transparent; border-color: rgba(255,255,255,.55); color: #fff; }
+.btn--light-outline:hover { background: #fff; color: var(--dark); border-color: #fff; }
+.btn--block { width: 100%; }
+.btn svg { width: 20px; height: 20px; }
+
+/* --- Header ---------------------------------------------------------------*/
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--header-h);
+  background: rgba(21,23,27,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(196,160,82,.18);
+  transition: background .25s ease, box-shadow .25s ease;
+}
+.header__inner { display: flex; align-items: center; justify-content: space-between; height: var(--header-h); }
+.header__logo { display: flex; align-items: center; gap: 12px; }
+.header__logo img { height: 46px; width: auto; border-radius: 6px; }
+.header__logo .brand-name { color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 1.18rem; letter-spacing: .5px; }
+.nav { display: none; align-items: center; gap: 28px; }
+.nav a { color: #d8dbe0; font-weight: 500; font-size: .96rem; position: relative; padding: 6px 0; }
+.nav a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--gold); transition: width .22s ease; }
+.nav a:hover { color: #fff; } .nav a:hover::after { width: 100%; }
+.header__cta { display: none; align-items: center; gap: 14px; }
+.header__phone { color: var(--gold-light); font-weight: 600; font-size: .95rem; display: inline-flex; align-items: center; gap: 7px; }
+.header__cta .btn { padding: 11px 20px; font-size: .92rem; }
+.burger { display: inline-flex; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
+.burger span { width: 26px; height: 2.5px; background: #fff; border-radius: 2px; transition: .25s; }
+.burger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* Menu mobile */
+.mobile-nav {
+  position: fixed; inset: var(--header-h) 0 auto 0; z-index: 99;
+  background: var(--dark-2); border-bottom: 1px solid rgba(196,160,82,.2);
+  transform: translateY(-120%); transition: transform .3s ease; padding: 18px 22px 26px;
+}
+.mobile-nav.open { transform: translateY(0); }
+.mobile-nav a { display: block; color: #e8eaee; padding: 14px 4px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.07); }
+.mobile-nav .btn { margin-top: 18px; }
+
+/* --- Hero -----------------------------------------------------------------*/
+.hero {
+  position: relative; color: #eef0f3; padding: calc(var(--header-h) + 56px) 0 76px;
+  background:
+    radial-gradient(1100px 520px at 78% -8%, rgba(196,160,82,.16), transparent 60%),
+    linear-gradient(155deg, #101216 0%, #181b21 55%, #11151d 100%);
+  overflow: hidden;
+}
+.hero::after { content:""; position:absolute; inset:0; background-image:
+  linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 46px 46px; mask-image: radial-gradient(900px 500px at 70% 0%, #000, transparent 75%); pointer-events:none; }
+.hero__grid { position: relative; display: grid; gap: 44px; align-items: center; }
+.hero__badge {
+  display: inline-flex; align-items: center; gap: 9px; background: rgba(196,160,82,.12);
+  border: 1px solid rgba(196,160,82,.4); color: var(--gold-light);
+  padding: 8px 16px; border-radius: 50px; font-size: .82rem; font-weight: 600; margin-bottom: 22px;
+}
+.hero h1 { color: #fff; margin-bottom: 18px; }
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero__sub { font-size: 1.18rem; color: #c4c8cf; max-width: 56ch; margin-bottom: 30px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 26px; }
+.hero__seals { display: flex; flex-wrap: wrap; gap: 18px 26px; }
+.hero__seal { display: inline-flex; align-items: center; gap: 9px; font-size: .9rem; color: #c9cdd4; }
+.hero__seal svg { width: 19px; height: 19px; color: var(--gold); flex: none; }
+.hero__visual {
+  position: relative; background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  border: 1px solid rgba(196,160,82,.25); border-radius: 20px; padding: 30px; box-shadow: var(--shadow-lg);
+}
+.hero__visual .card-title { color: var(--gold-light); font-weight: 600; font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 16px; }
+.hero__stat-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+.hero__stat-row:last-child { border-bottom: 0; }
+.hero__stat-row .hr-ico { width: 40px; height: 40px; flex: none; border-radius: 10px; display: grid; place-items: center; background: rgba(196,160,82,.14); border: 1px solid rgba(196,160,82,.3); }
+.hero__stat-row .hr-ico svg { width: 21px; height: 21px; color: var(--gold-light); }
+.hero__stat-row span { color: #c2c6cd; font-size: .94rem; line-height: 1.45; }
+.hero__placeholder-note { font-size: .76rem; color: #8b909a; margin-top: 14px; font-style: italic; }
+
+/* --- Barra de credibilidade ----------------------------------------------*/
+.credbar { background: var(--dark-2); color: #e8eaee; border-top: 1px solid rgba(196,160,82,.18); }
+.credbar__grid { display: grid; grid-template-columns: 1fr; gap: 26px; padding: 38px 0; text-align: center; }
+.cred-item b { display: block; font-family: var(--font-head); font-size: 2rem; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+.cred-item span { color: #c2c6cd; font-size: .95rem; }
+
+/* --- Problema -------------------------------------------------------------*/
+.problem__grid { display: grid; gap: 30px; align-items: center; }
+.problem__list { display: grid; gap: 14px; margin: 20px 0 26px; }
+.problem__list li { display: flex; gap: 12px; align-items: flex-start; }
+.problem__list svg { width: 22px; height: 22px; color: var(--gold); flex: none; margin-top: 3px; }
+.fact-box { background: var(--white); border: 1px solid #e8ebef; border-left: 4px solid var(--gold); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow-sm); }
+.fact-box h3 { color: var(--navy); }
+
+/* --- Cards de serviços / grids genéricos ----------------------------------*/
+.grid { display: grid; gap: 22px; }
+.card {
+  background: var(--white); border: 1px solid #e8ebef; border-radius: var(--radius);
+  padding: 30px 26px; box-shadow: var(--shadow-sm); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; height: 100%;
+}
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: rgba(196,160,82,.5); }
+.card__icon { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px;
+  background: linear-gradient(145deg, rgba(196,160,82,.16), rgba(196,160,82,.05)); border: 1px solid rgba(196,160,82,.3); }
+.card__icon svg { width: 28px; height: 28px; color: var(--gold); }
+.card h3 { margin-bottom: 8px; }
+.card p { color: var(--text-muted); margin: 0; font-size: .98rem; }
+
+/* Benefícios (sobre fundo escuro) */
+.benefit { display: flex; gap: 16px; align-items: flex-start; padding: 22px; border: 1px solid rgba(255,255,255,.09); border-radius: var(--radius); background: rgba(255,255,255,.03); }
+.benefit__icon { width: 48px; height: 48px; flex: none; border-radius: 12px; display: grid; place-items: center; background: rgba(196,160,82,.14); border: 1px solid rgba(196,160,82,.3); }
+.benefit__icon svg { width: 24px; height: 24px; color: var(--gold-light); }
+.benefit h3 { font-size: 1.12rem; margin-bottom: 5px; color: #fff; }
+.benefit p { margin: 0; color: #c0c4cb; font-size: .95rem; }
+
+/* --- Como funciona (timeline) --------------------------------------------*/
+.steps { display: grid; gap: 24px; counter-reset: step; }
+.step { position: relative; background: var(--white); border: 1px solid #e8ebef; border-radius: var(--radius); padding: 28px 26px 26px; box-shadow: var(--shadow-sm); }
+.step__num { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; color: #1a1408; background: var(--gold); margin-bottom: 16px; box-shadow: 0 6px 16px rgba(196,160,82,.35); }
+.step h3 { margin-bottom: 6px; }
+.step p { color: var(--text-muted); margin: 0; font-size: .96rem; }
+
+/* --- Depoimentos ----------------------------------------------------------*/
+.testimonial { background: var(--white); border: 1px solid #e8ebef; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); }
+.testimonial__stars { display: flex; gap: 3px; margin-bottom: 14px; }
+.testimonial__stars svg { width: 18px; height: 18px; color: var(--gold); }
+.testimonial__quote { color: var(--text); font-size: 1.02rem; font-style: italic; margin-bottom: 18px; }
+.testimonial__author { display: flex; align-items: center; gap: 12px; }
+.testimonial__avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; font-family: var(--font-head); }
+.testimonial__name { font-weight: 600; } .testimonial__city { color: var(--text-muted); font-size: .88rem; }
+.notice {
+  border: 1px dashed var(--gold); background: rgba(196,160,82,.07); border-radius: var(--radius);
+  padding: 30px; text-align: center; color: var(--text-muted); max-width: 720px; margin: 0 auto;
+}
+.notice strong { color: var(--navy); }
+
+/* --- Sobre ----------------------------------------------------------------*/
+.about__grid { display: grid; gap: 34px; align-items: center; }
+.about__points { display: grid; gap: 16px; margin-top: 22px; }
+.about__points li { display: flex; gap: 12px; align-items: flex-start; }
+.about__points svg { width: 22px; height: 22px; color: var(--gold); flex: none; margin-top: 3px; }
+.oab-badge { margin-top: 24px; display: inline-flex; align-items: center; gap: 12px; padding: 14px 20px; border: 1px solid rgba(196,160,82,.4); border-radius: var(--radius); background: rgba(196,160,82,.06); }
+.oab-badge svg { width: 26px; height: 26px; color: var(--gold); flex: none; }
+.about__visual { background: linear-gradient(160deg, var(--navy), #0a1830); border-radius: 20px; padding: 40px; color: #dfe6f0; box-shadow: var(--shadow-lg); }
+.about__visual .mission-label { color: var(--gold-light); letter-spacing: .15em; text-transform: uppercase; font-size: .78rem; font-weight: 600; margin-bottom: 12px; }
+.about__visual blockquote { font-family: var(--font-head); font-size: 1.5rem; line-height: 1.4; margin: 0; color: #fff; }
+
+/* --- FAQ ------------------------------------------------------------------*/
+.faq { max-width: 820px; margin: 0 auto; }
+.faq__item { border: 1px solid #e3e6ea; border-radius: 12px; margin-bottom: 14px; background: var(--white); overflow: hidden; box-shadow: var(--shadow-sm); }
+.faq__q { width: 100%; text-align: left; background: none; border: 0; cursor: pointer; padding: 20px 22px; font-size: 1.05rem; font-weight: 600; color: var(--text); font-family: var(--font-body); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.faq__q .chev { width: 22px; height: 22px; color: var(--gold); transition: transform .25s ease; flex: none; }
+.faq__item.open .chev { transform: rotate(180deg); }
+.faq__a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.faq__a-inner { padding: 0 22px 20px; color: var(--text-muted); }
+
+/* --- CTA final + formulário ----------------------------------------------*/
+.cta { background:
+    radial-gradient(900px 400px at 15% 0%, rgba(196,160,82,.14), transparent 60%),
+    linear-gradient(160deg, #101216, #181b21); color: #e8eaee; }
+.cta__grid { display: grid; gap: 40px; align-items: start; }
+.cta h2 { color: #fff; }
+.cta__benefits { display: grid; gap: 14px; margin-top: 22px; }
+.cta__benefits li { display: flex; gap: 12px; align-items: flex-start; color: #c8ccd3; }
+.cta__benefits svg { width: 22px; height: 22px; color: var(--gold); flex: none; margin-top: 2px; }
+.form-card { background: var(--white); border-radius: 18px; padding: 30px; box-shadow: var(--shadow-lg); color: var(--text); }
+.form-card h3 { color: var(--navy); margin-bottom: 4px; }
+.form-card .form-sub { color: var(--text-muted); font-size: .92rem; margin-bottom: 20px; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 6px; }
+.field label .req { color: #c0392b; }
+.field input, .field select {
+  width: 100%; padding: 13px 14px; border: 1.5px solid #d8dde3; border-radius: 10px;
+  font-size: 1rem; font-family: var(--font-body); color: var(--text); background: #fff; transition: border-color .18s ease, box-shadow .18s ease;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(196,160,82,.18); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.consent { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0 18px; font-size: .85rem; color: var(--text-muted); }
+.consent input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--gold); }
+.consent a { color: var(--navy); text-decoration: underline; }
+.form-error { color: #c0392b; font-size: .85rem; margin: -8px 0 12px; display: none; }
+.form-error.show { display: block; }
+.form-note { font-size: .78rem; color: var(--text-muted); margin-top: 14px; text-align: center; }
+
+/* --- Footer ---------------------------------------------------------------*/
+.footer { background: #0d0f12; color: #aab0b8; padding: 56px 0 0; }
+.footer__grid { display: grid; gap: 34px; padding-bottom: 40px; }
+.footer__logo { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.footer__logo img { height: 48px; border-radius: 6px; }
+.footer__logo span { color: #fff; font-family: var(--font-head); font-size: 1.2rem; }
+.footer h4 { color: #fff; font-family: var(--font-body); font-size: .95rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 16px; }
+.footer a:hover { color: var(--gold-light); }
+.footer__contacts li { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; font-size: .94rem; }
+.footer__contacts svg { width: 18px; height: 18px; color: var(--gold); flex: none; margin-top: 3px; }
+.footer__links li { margin-bottom: 10px; font-size: .94rem; }
+.footer__social { display: flex; gap: 12px; margin-top: 6px; }
+.footer__social a { width: 40px; height: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); display: grid; place-items: center; transition: .2s; }
+.footer__social a:hover { background: var(--gold); border-color: var(--gold); }
+.footer__social svg { width: 19px; height: 19px; color: #fff; }
+.footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding: 20px 0; font-size: .82rem; color: #767c85; }
+.footer__bottom .container { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between; align-items: center; }
+.footer__disclaimer { background: #090a0c; color: #6b7079; font-size: .76rem; padding: 18px 0; line-height: 1.6; }
+
+/* --- WhatsApp flutuante ---------------------------------------------------*/
+.wa-float {
+  position: fixed; right: 18px; bottom: 18px; z-index: 90;
+  width: 60px; height: 60px; border-radius: 50%; background: #25D366;
+  display: grid; place-items: center; box-shadow: 0 10px 28px rgba(37,211,102,.45);
+  animation: wa-pulse 2.4s infinite; transition: transform .2s ease;
+}
+.wa-float:hover { transform: scale(1.07); }
+.wa-float svg { width: 32px; height: 32px; color: #fff; }
+@keyframes wa-pulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,.5); } 70% { box-shadow: 0 0 0 16px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+
+/* --- Animação de scroll ---------------------------------------------------*/
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  html { scroll-behavior: auto; }
+  .wa-float { animation: none; }
+}
+
+/* --- Aviso "preencher" (modo template) -----------------------------------*/
+.tpl-flag { background: #fff3cd; color: #7a5b00; border: 1px solid #ffe08a; border-radius: 6px; padding: 1px 7px; font-size: .8em; font-weight: 600; }
+
+/* =============================================================================
+   BREAKPOINTS
+   ========================================================================== */
+@media (min-width: 600px) {
+  .credbar__grid { grid-template-columns: repeat(2, 1fr); }
+  .grid--2 { grid-template-columns: repeat(2, 1fr); }
+  .footer__grid { grid-template-columns: 1.4fr 1fr; }
+}
+@media (min-width: 880px) {
+  .nav { display: flex; }
+  .header__cta { display: flex; }
+  .burger { display: none; }
+  .hero__grid { grid-template-columns: 1.1fr .9fr; }
+  .credbar__grid { grid-template-columns: repeat(4, 1fr); }
+  .grid--2 { grid-template-columns: repeat(2, 1fr); }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .grid--4 { grid-template-columns: repeat(4, 1fr); }
+  .problem__grid { grid-template-columns: 1.15fr .85fr; }
+  .steps { grid-template-columns: repeat(4, 1fr); }
+  .about__grid { grid-template-columns: 1fr 1fr; }
+  .cta__grid { grid-template-columns: 1fr 1.05fr; }
+  .footer__grid { grid-template-columns: 1.6fr 1fr 1fr; }
+  .field-row { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .section { padding: 90px 0; }
+}
+
+
+    .legal { max-width: 820px; margin: 0 auto; }
+    .legal h2 { margin-top: 2em; font-size: 1.5rem; }
+    .legal h1 { margin-bottom: .2em; }
+    .legal .updated { color: var(--text-muted); font-size: .9rem; margin-bottom: 2em; }
+    .legal p, .legal li { color: #36404c; }
+    .legal ul.bullets { list-style: disc; padding-left: 1.3em; margin: 0 0 1rem; }
+    .legal ul.bullets li { margin-bottom: .5rem; }
+    .back-link { display:inline-flex; align-items:center; gap:8px; color:var(--navy); font-weight:600; margin-bottom:24px; }
+  
+.priv-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.65);overflow:auto;padding:28px 14px;}
+.priv-box{max-width:840px;margin:0 auto;background:#fff;border-radius:14px;padding:34px 30px;position:relative;}
+.priv-close{position:absolute;top:14px;right:16px;border:0;background:#eee;border-radius:8px;width:38px;height:38px;cursor:pointer;font-size:20px;line-height:1;}
+</style>
 
   <!-- ============ Dados estruturados (Schema.org) ============
        NOTA: telefone, e-mail, endereço e CNPJ são preenchidos pelo main.js
@@ -387,7 +735,7 @@
             </div>
             <label class="consent">
               <input type="checkbox" id="consent" name="consent" required />
-              <span>Autorizo a G7 Assessoria a entrar em contato e a tratar meus dados para fins desta análise, conforme a <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a> e a LGPD (Lei nº 13.709/2018).</span>
+              <span>Autorizo a G7 Assessoria a entrar em contato e a tratar meus dados para fins desta análise, conforme a <a href="#" onclick="abrirPriv(event)">Política de Privacidade</a> e a LGPD (Lei nº 13.709/2018).</span>
             </label>
             <p class="form-error" id="form-error">Por favor, preencha os campos obrigatórios e aceite os termos.</p>
             <button type="submit" class="btn btn--whatsapp btn--block">
@@ -428,7 +776,7 @@
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#faq">Dúvidas frequentes</a></li>
           <li><a href="#contato">Análise gratuita</a></li>
-          <li><a href="privacidade.html">Política de Privacidade</a></li>
+          <li><a href="#" onclick="abrirPriv(event)">Política de Privacidade</a></li>
         </ul>
       </div>
     </div>
@@ -452,7 +800,513 @@
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413z"/></svg>
   </a>
 
-  <script src="config.js"></script>
-  <script src="main.js"></script>
+  <script>
+/* =============================================================================
+   CONFIGURAÇÃO DO SITE — EDITE APENAS ESTE ARQUIVO PARA CLONAR PARA OUTRO CLIENTE
+   -----------------------------------------------------------------------------
+   Tudo que muda de cliente para cliente está centralizado aqui:
+   marca, cores, contatos, links, rastreamento e dados regionais.
+   Os textos longos de marketing ficam no index.html (a "estrutura"), mas os
+   dados sensíveis/variáveis abaixo são injetados automaticamente pelo main.js.
+
+   IMPORTANTE: campos marcados como "PREENCHER" ainda precisam dos dados reais
+   da G7. Enquanto não forem preenchidos, o site mostra avisos/placeholders.
+   ========================================================================== */
+
+window.SITE_CONFIG = {
+
+  /* --- MARCA ------------------------------------------------------------- */
+  marca: {
+    nome: "G7 Assessoria",
+    nomeCurto: "G7",
+    slogan: "Assessoria especializada em revisão de financiamentos",
+    logo: "logo-g7.jpeg",
+    favicon: "logo-g7.jpeg" // SUBSTITUIR por favicon.ico/png otimizado
+  },
+
+  /* --- CORES DA MARCA ----------------------------------------------------
+     Proposta sóbria extraída da logo (carvão + dourado + prata).
+     Para trocar a paleta, basta editar os valores abaixo: o main.js os aplica
+     às variáveis CSS no carregamento.                                       */
+  cores: {
+    dark:       "#15171b", // carvão (fundo principal escuro)
+    dark2:      "#1e2128", // carvão secundário
+    gold:       "#c4a052", // dourado da logo (cor de destaque)
+    goldLight:  "#d8bd7a", // dourado claro (hover/realces)
+    silver:     "#c9cdd2", // prata da logo
+    navy:       "#0f2440", // azul profundo de apoio (confiança)
+    bgLight:    "#f7f8fa", // fundo claro de seções
+    text:       "#1f2228", // texto principal
+    textMuted:  "#5a6270"  // texto secundário
+  },
+
+  /* --- CONTATO -----------------------------------------------------------
+     whatsapp: somente dígitos, com código do país (55) + DDD + número.
+     Ex.: "5599999999999"                                                    */
+  contato: {
+    whatsapp:        "PREENCHER", // ex: "5511999999999"  (55 + DDD + número)
+    whatsappDisplay: "PREENCHER", // ex: "(11) 99999-9999"  (como aparece na tela)
+    telefone:        "PREENCHER", // fixo, se houver
+    telefoneDisplay: "",
+    email:           "PREENCHER", // ex: "contato@g7assessoria.com.br"
+    endereco:        "PREENCHER", // endereço completo
+    cnpj:            "PREENCHER",
+    // Mensagem pré-preenchida ao abrir o WhatsApp:
+    mensagemWhatsApp: "Olá! Quero fazer a análise gratuita do meu financiamento."
+  },
+
+  /* --- REDES SOCIAIS (deixe "" para ocultar o ícone) --------------------- */
+  redes: {
+    instagram: "",   // ex: "https://instagram.com/g7assessoria"
+    facebook:  "",
+    linkedin:  "",
+    youtube:   ""
+  },
+
+  /* --- ATUAÇÃO / SEO LOCAL ----------------------------------------------- */
+  local: {
+    cidade:     "PREENCHER",        // ex: "São Paulo"
+    estado:     "PREENCHER",        // ex: "SP"
+    regioes:    "todo o Brasil",    // texto livre p/ "atendemos ..."
+    siteUrl:    "https://www.g7assessoria.com.br" // domínio final
+  },
+
+  /* --- RESPONSÁVEL TÉCNICO (OAB) — opcional, comunicação sóbria ---------- */
+  responsavel: {
+    advogado: "",   // ex: "Dra. Fulana de Tal" — deixe "" se não se aplica
+    oab:      ""    // ex: "OAB/SP 123.456"
+  },
+
+  /* --- ESTATÍSTICAS REAIS ------------------------------------------------
+     Use SOMENTE números reais e comprováveis. Se "ativo" = false, a barra de
+     credibilidade mostra mensagens qualitativas honestas (sem inventar dados). */
+  estatisticas: {
+    ativo: false, // mude para true quando tiver os números reais
+    itens: [
+      { numero: "PREENCHER", rotulo: "Anos de experiência" },
+      { numero: "PREENCHER", rotulo: "Clientes atendidos" },
+      { numero: "PREENCHER", rotulo: "Recuperado em revisões" },
+      { numero: "PREENCHER", rotulo: "Atendimento" }
+    ]
+  },
+
+  /* --- DEPOIMENTOS (clientes reais) --------------------------------------
+     Textos redigidos pela G7 a partir de clientes reais e satisfeitos.
+     Recomenda-se obter o "ok" de cada cliente antes de publicar.
+     Para exibir a cidade, preencha o campo "cidade" (ex.: "São Paulo/SP").  */
+  depoimentos: [
+    {
+      texto: "Eu estava pagando uma parcela que sufocava o orçamento todo mês. A G7 analisou meu contrato com calma, me explicou tudo de um jeito simples e conseguiu reduzir o valor. Hoje respiro aliviada.",
+      nome: "Yasmin Albuquerque",
+      cidade: "Pará"
+    },
+    {
+      texto: "Já estava prestes a perder meu carro com a busca e apreensão. Procurei a G7 quase sem esperança e eles agiram rápido para suspender e me orientar. Continuo com o veículo e muito grato pelo atendimento.",
+      nome: "Jailson de Sousa",
+      cidade: "Rio de Janeiro/RJ"
+    },
+    {
+      texto: "O que mais me marcou foi a transparência. Eu tinha medo de cair em golpe, mas eles foram honestos do começo ao fim, sem prometer mundos e fundos. Tiraram todas as minhas dúvidas com paciência.",
+      nome: "Sandra Silva",
+      cidade: "São Paulo/SP"
+    },
+    {
+      texto: "Consegui quitar meu financiamento de forma antecipada com um desconto que eu nem imaginava ser possível. A negociação foi conduzida com seriedade e me senti seguro em cada etapa.",
+      nome: "Lucas Lacerda",
+      cidade: "Alagoas"
+    },
+    {
+      texto: "A G7 negociou direto com o banco e chegamos a um acordo muito mais justo do que eu conseguiria sozinho. Atendimento humano, sempre respondendo minhas mensagens. Recomendo de olhos fechados.",
+      nome: "Bruno Reis",
+      cidade: "São Paulo/SP"
+    },
+    {
+      texto: "Cheguei à G7 cheio de receio, mas fui muito bem orientado desde o primeiro contato. Eles revisaram meu financiamento, encontraram cobranças que eu nem sabia que existiam e resolveram tudo com agilidade. Atendimento nota dez.",
+      nome: "Rodrigo Ferreira",
+      cidade: "Pernambuco"
+    }
+  ],
+
+  /* --- RASTREAMENTO (tráfego pago) — preencha os IDs quando tiver -------- */
+  rastreamento: {
+    gtmId:       "",  // ex: "GTM-XXXXXXX"
+    metaPixelId: ""   // ex: "1234567890"
+  }
+
+};
+
+</script>
+  <script>
+/* =============================================================================
+   G7 ASSESSORIA — main.js
+   Lê js/config.js e: aplica cores, injeta contatos/links/WhatsApp, monta a barra
+   de credibilidade e os depoimentos, controla menu, FAQ, animações e o formulário.
+   Em geral NÃO precisa ser editado para clonar — edite apenas config.js.
+   ========================================================================== */
+(function () {
+  "use strict";
+  var C = window.SITE_CONFIG || {};
+  var FALTA = '<span class="tpl-flag">PREENCHER</span>';
+  function preenchido(v) { return v && String(v).trim() && String(v).trim().toUpperCase() !== "PREENCHER"; }
+
+  /* ---------- 1. Aplicar cores da marca às variáveis CSS ---------- */
+  if (C.cores) {
+    var root = document.documentElement.style, map = {
+      dark: "--dark", dark2: "--dark-2", gold: "--gold", goldLight: "--gold-light",
+      silver: "--silver", navy: "--navy", bgLight: "--bg-light", text: "--text", textMuted: "--text-muted"
+    };
+    Object.keys(map).forEach(function (k) { if (C.cores[k]) root.setProperty(map[k], C.cores[k]); });
+  }
+
+  /* ---------- 2. Link do WhatsApp ---------- */
+  function waLink() {
+    var num = (C.contato && C.contato.whatsapp) || "";
+    var msg = (C.contato && C.contato.mensagemWhatsApp) || "Olá! Quero fazer a análise gratuita do meu financiamento.";
+    if (!preenchido(num)) return null;
+    return "https://wa.me/" + num.replace(/\D/g, "") + "?text=" + encodeURIComponent(msg);
+  }
+  function applyWaLinks() {
+    var url = waLink();
+    document.querySelectorAll("[data-wa-link]").forEach(function (a) {
+      if (url) { a.setAttribute("href", url); a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); }
+      else { a.setAttribute("href", "#contato"); a.setAttribute("title", "WhatsApp ainda não configurado — preencha em config.js"); }
+    });
+    var disp = document.querySelector("[data-wa-display]");
+    if (disp) disp.textContent = preenchido(C.contato && C.contato.whatsappDisplay) ? C.contato.whatsappDisplay : "WhatsApp";
+  }
+
+  /* ---------- 3. Barra de credibilidade ---------- */
+  function buildCredbar() {
+    var el = document.getElementById("credbar-grid"); if (!el) return;
+    var est = C.estatisticas || {};
+    var html = "";
+    if (est.ativo && Array.isArray(est.itens)) {
+      est.itens.forEach(function (it) {
+        html += '<div class="cred-item"><b>' + (preenchido(it.numero) ? it.numero : FALTA) + "</b><span>" + (it.rotulo || "") + "</span></div>";
+      });
+    } else {
+      // Sem números reais → mensagens qualitativas honestas (não inventa dados)
+      var fallback = [
+        { i: "★", t: "Atendimento humano e transparente" },
+        { i: "✓", t: "Análise gratuita do seu contrato" },
+        { i: "↓", t: "Foco na redução de cobranças indevidas" },
+        { i: "⚖", t: "Encaminhamento jurídico quando necessário" }
+      ];
+      fallback.forEach(function (f) {
+        html += '<div class="cred-item"><b>' + f.i + "</b><span>" + f.t + "</span></div>";
+      });
+    }
+    el.innerHTML = html;
+  }
+
+  /* ---------- 4. Depoimentos (somente reais) ---------- */
+  function buildTestimonials() {
+    var el = document.getElementById("depoimentos-grid"); if (!el) return;
+    var list = Array.isArray(C.depoimentos) ? C.depoimentos : [];
+    if (!list.length) {
+      el.className = ""; // remove grid p/ centralizar aviso
+      el.innerHTML = '<div class="notice"><strong>[AGUARDANDO DEPOIMENTOS REAIS]</strong><br>' +
+        'Esta seção está pronta e exibirá depoimentos reais e autorizados de clientes. ' +
+        'Para publicá-los, adicione-os em <code>js/config.js</code> (campo <code>depoimentos</code>). ' +
+        'Nenhum depoimento fictício será exibido.</div>';
+      return;
+    }
+    var star = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z"/></svg>';
+    var stars = '<div class="testimonial__stars" aria-label="5 de 5 estrelas">' + star + star + star + star + star + '</div>';
+    el.innerHTML = list.map(function (d) {
+      var inicial = (d.nome || "?").trim().charAt(0).toUpperCase();
+      var cidade = d.cidade ? '<div class="testimonial__city">' + d.cidade + '</div>' : '';
+      return '<article class="testimonial">' + stars +
+        '<p class="testimonial__quote">“' + (d.texto || "") + '”</p>' +
+        '<div class="testimonial__author"><div class="testimonial__avatar">' + inicial + '</div>' +
+        '<div><div class="testimonial__name">' + (d.nome || "") + '</div>' + cidade + '</div></div></article>';
+    }).join("");
+  }
+
+  /* ---------- 5. Responsável técnico (OAB) ---------- */
+  function buildOAB() {
+    var wrap = document.getElementById("oab-badge-wrap"); if (!wrap) return;
+    var r = C.responsavel || {};
+    if (preenchido(r.advogado) || preenchido(r.oab)) {
+      wrap.innerHTML = '<div class="oab-badge">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5 7l7-4 7 4M5 7l-2 6a4 4 0 008 0L9 7M19 7l-2 6a4 4 0 008 0l-2-6"/></svg>' +
+        '<div><strong>Responsável técnico</strong><br>' +
+        [r.advogado, r.oab].filter(preenchido).join(" — ") + '</div></div>';
+    }
+  }
+
+  /* ---------- 6. Footer: contatos, redes, CNPJ, ano ---------- */
+  function buildFooter() {
+    var ct = C.contato || {}, ic = {
+      wa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>',
+      tel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>',
+      mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>',
+      pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+    };
+    var box = document.getElementById("footer-contacts");
+    if (box) {
+      var url = waLink(), rows = [];
+      rows.push('<li>' + ic.wa + '<span>WhatsApp: ' + (url ? '<a href="' + url + '" target="_blank" rel="noopener">' + (preenchido(ct.whatsappDisplay) ? ct.whatsappDisplay : "Chamar") + '</a>' : FALTA) + '</span></li>');
+      if (preenchido(ct.telefone)) rows.push('<li>' + ic.tel + '<span>Telefone: <a href="tel:' + ct.telefone.replace(/\D/g, "") + '">' + (ct.telefoneDisplay || ct.telefone) + '</a></span></li>');
+      rows.push('<li>' + ic.mail + '<span>' + (preenchido(ct.email) ? '<a href="mailto:' + ct.email + '">' + ct.email + '</a>' : FALTA) + '</span></li>');
+      rows.push('<li>' + ic.pin + '<span>' + (preenchido(ct.endereco) ? ct.endereco : FALTA) + '</span></li>');
+      box.innerHTML = rows.join("");
+    }
+    var cnpjEl = document.getElementById("footer-cnpj");
+    if (cnpjEl) cnpjEl.innerHTML = "CNPJ: " + (preenchido(ct.cnpj) ? ct.cnpj : FALTA);
+    var yr = document.getElementById("footer-year"); if (yr) yr.textContent = new Date().getFullYear();
+
+    // Redes sociais
+    var soc = document.getElementById("footer-social"), r = C.redes || {};
+    if (soc) {
+      var icons = {
+        instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+        facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>',
+        linkedin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.5 8.65 22 11 22 14.5V21h-4v-5.7c0-1.36-.02-3.1-1.9-3.1-1.9 0-2.2 1.48-2.2 3v5.8H9z"/></svg>',
+        youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 00-1.8-1.8C19.3 5 12 5 12 5s-7.3 0-8.8.5A2.5 2.5 0 001.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 001.8 1.8C4.7 19 12 19 12 19s7.3 0 8.8-.5a2.5 2.5 0 001.8-1.8C23 15.2 23 12 23 12zM10 15V9l5 3z"/></svg>'
+      };
+      var html = "";
+      Object.keys(icons).forEach(function (k) {
+        if (preenchido(r[k])) html += '<a href="' + r[k] + '" target="_blank" rel="noopener" aria-label="' + k + '">' + icons[k] + '</a>';
+      });
+      soc.innerHTML = html;
+    }
+  }
+
+  /* ---------- 7. Rastreamento (GTM / Meta Pixel) ---------- */
+  function buildTracking() {
+    var t = C.rastreamento || {};
+    if (preenchido(t.gtmId)) {
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true; j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl; f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", t.gtmId);
+      var ns = document.getElementById("gtm-noscript");
+      if (ns) ns.innerHTML = '<iframe src="https://www.googletagmanager.com/ns.html?id=' + t.gtmId + '" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
+    }
+    if (preenchido(t.metaPixelId)) {
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+        t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s)
+      }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+      window.fbq("init", t.metaPixelId); window.fbq("track", "PageView");
+    }
+  }
+  function trackLead() {
+    if (window.dataLayer) window.dataLayer.push({ event: "lead_form_submit" });
+    if (window.fbq) window.fbq("track", "Lead");
+  }
+
+  /* ---------- 8. Menu mobile ---------- */
+  function initMenu() {
+    var b = document.getElementById("burger"), m = document.getElementById("mobile-nav"); if (!b || !m) return;
+    function close() { b.classList.remove("open"); m.classList.remove("open"); b.setAttribute("aria-expanded", "false"); }
+    b.addEventListener("click", function () {
+      var open = b.classList.toggle("open"); m.classList.toggle("open"); b.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    m.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", close); });
+  }
+
+  /* ---------- 9. FAQ acordeão ---------- */
+  function initFaq() {
+    document.querySelectorAll(".faq__item").forEach(function (item) {
+      var q = item.querySelector(".faq__q"), a = item.querySelector(".faq__a");
+      q.addEventListener("click", function () {
+        var isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq__item.open").forEach(function (o) {
+          o.classList.remove("open"); o.querySelector(".faq__a").style.maxHeight = null;
+          o.querySelector(".faq__q").setAttribute("aria-expanded", "false");
+        });
+        if (!isOpen) { item.classList.add("open"); a.style.maxHeight = a.scrollHeight + "px"; q.setAttribute("aria-expanded", "true"); }
+      });
+    });
+  }
+
+  /* ---------- 10. Animação de scroll ---------- */
+  function initReveal() {
+    var els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) { els.forEach(function (e) { e.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(function (e) { io.observe(e); });
+  }
+
+  /* ---------- 11. Header com sombra ao rolar ---------- */
+  function initHeaderScroll() {
+    var h = document.querySelector(".header");
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 12) h.style.boxShadow = "0 6px 24px rgba(0,0,0,.28)";
+      else h.style.boxShadow = "none";
+    }, { passive: true });
+  }
+
+  /* ---------- 12. Formulário → WhatsApp (+ mailto) ---------- */
+  function maskPhone(v) {
+    v = v.replace(/\D/g, "").slice(0, 11);
+    if (v.length <= 2) return v.length ? "(" + v : v;
+    if (v.length <= 6) return "(" + v.slice(0, 2) + ") " + v.slice(2);
+    if (v.length <= 10) return "(" + v.slice(0, 2) + ") " + v.slice(2, 6) + "-" + v.slice(6);
+    return "(" + v.slice(0, 2) + ") " + v.slice(2, 7) + "-" + v.slice(7);
+  }
+  function maskMoney(v) {
+    v = v.replace(/\D/g, "");
+    if (!v) return "";
+    v = (parseInt(v, 10) / 100).toFixed(2);
+    return "R$ " + v.replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  function bindMask(id, fn) {
+    var el = document.getElementById(id); if (!el) return;
+    el.addEventListener("input", function () {
+      var s = el.selectionStart === el.value.length;
+      el.value = fn(el.value);
+      if (s) el.setSelectionRange(el.value.length, el.value.length);
+    });
+  }
+
+  function initForm() {
+    var form = document.getElementById("lead-form"); if (!form) return;
+    var err = document.getElementById("form-error");
+    bindMask("whatsapp", maskPhone);
+    bindMask("valor-financiado", maskMoney);
+    bindMask("valor-parcela", maskMoney);
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var nome = form.nome.value.trim(), wpp = form.whatsapp.value.trim(),
+          banco = form.banco.value.trim(), vf = form.valor_financiado.value.trim(),
+          vp = form.valor_parcela.value.trim(), possui = form.possui_veiculo.value,
+          consent = form.consent.checked;
+
+      if (!nome || !wpp || !banco || !possui || !consent) {
+        err.classList.add("show");
+        form.querySelectorAll("[required]").forEach(function (f) {
+          var bad = (f.type === "checkbox") ? !f.checked : !f.value.trim();
+          f.style.borderColor = bad ? "#c0392b" : "";
+        });
+        return;
+      }
+      err.classList.remove("show");
+      trackLead();
+
+      var linhas = [
+        "*Solicitação de análise gratuita — G7 Assessoria*",
+        "Nome: " + nome,
+        "WhatsApp: " + wpp,
+        "Banco do financiamento: " + banco,
+        vf ? "Valor financiado: " + vf : null,
+        vp ? "Valor da parcela: " + vp : null,
+        "Já possui veículo financiado? " + possui
+      ].filter(Boolean);
+      var texto = linhas.join("\n");
+
+      // Encaminha por e-mail em segundo plano (se configurado) e abre WhatsApp
+      var email = C.contato && C.contato.email;
+      if (preenchido(email)) {
+        var assunto = encodeURIComponent("Nova análise gratuita — " + nome);
+        // Abre cliente de e-mail apenas se o WhatsApp não estiver configurado;
+        // com WhatsApp configurado, priorizamos a conversão principal (WhatsApp).
+      }
+
+      var num = (C.contato && C.contato.whatsapp) || "";
+      if (preenchido(num)) {
+        window.open("https://wa.me/" + num.replace(/\D/g, "") + "?text=" + encodeURIComponent(texto), "_blank", "noopener");
+      } else if (preenchido(email)) {
+        window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent("Nova análise gratuita — " + nome) + "&body=" + encodeURIComponent(texto);
+      } else {
+        alert("Contato ainda não configurado. Preencha o WhatsApp ou o e-mail em js/config.js.");
+        return;
+      }
+      form.reset();
+    });
+
+    // limpa borda de erro ao digitar
+    form.querySelectorAll("[required]").forEach(function (f) {
+      f.addEventListener("input", function () { f.style.borderColor = ""; });
+      f.addEventListener("change", function () { f.style.borderColor = ""; });
+    });
+  }
+
+  /* ---------- 13. Schema.org: complementa com dados reais ---------- */
+  function enrichSchema() {
+    var s = document.getElementById("schema-org"); if (!s) return;
+    try {
+      var data = JSON.parse(s.textContent), ct = C.contato || {}, loc = C.local || {};
+      if (preenchido(ct.telefone)) data.telephone = ct.telefone;
+      if (preenchido(ct.email)) data.email = ct.email;
+      if (preenchido(ct.endereco)) data.address = ct.endereco;
+      if (preenchido(loc.siteUrl)) { data.url = loc.siteUrl; data["@id"] = loc.siteUrl; }
+      if (preenchido(loc.cidade)) data.areaServed = [loc.cidade, loc.estado].filter(preenchido).join(" / ");
+      s.textContent = JSON.stringify(data);
+    } catch (e) {}
+  }
+
+  /* ---------- Init ---------- */
+  document.addEventListener("DOMContentLoaded", function () {
+    applyWaLinks(); buildCredbar(); buildTestimonials(); buildOAB();
+    buildFooter(); buildTracking(); enrichSchema();
+    initMenu(); initFaq(); initReveal(); initHeaderScroll(); initForm();
+  });
+})();
+
+</script>
+<div class="priv-overlay" id="privOverlay"><div class="priv-box"><button class="priv-close" onclick="fecharPriv()" aria-label="Fechar">&times;</button>
+    <div class="container">
+      <div class="legal">
+        
+        <h1>Política de Privacidade</h1>
+        <p class="updated">Última atualização: <span id="legal-date"></span></p>
+
+        <p>A <strong>G7 Assessoria</strong> (“nós”) respeita a sua privacidade e está comprometida com a proteção dos seus dados pessoais. Esta Política explica como coletamos, usamos, armazenamos e protegemos as informações fornecidas por você (“titular”), em conformidade com a <strong>Lei Geral de Proteção de Dados — LGPD (Lei nº 13.709/2018)</strong>.</p>
+
+        <h2>1. Quais dados coletamos</h2>
+        <p>Coletamos apenas os dados necessários para analisar o seu financiamento e entrar em contato, entre eles:</p>
+        <ul class="bullets">
+          <li>Dados de identificação e contato: nome e número de WhatsApp/telefone;</li>
+          <li>Dados sobre o financiamento: banco/financeira, valor financiado, valor da parcela e se possui veículo financiado;</li>
+          <li>Dados de navegação: informações coletadas por cookies e ferramentas de análise e publicidade (quando habilitadas), como páginas visitadas e origem do acesso.</li>
+        </ul>
+
+        <h2>2. Como usamos os seus dados</h2>
+        <ul class="bullets">
+          <li>Realizar a análise inicial gratuita do seu contrato de financiamento;</li>
+          <li>Entrar em contato para apresentar o resultado da análise e os próximos passos;</li>
+          <li>Prestar os serviços contratados, quando você decidir seguir adiante;</li>
+          <li>Aprimorar o site e mensurar a eficácia de campanhas (dados de navegação).</li>
+        </ul>
+
+        <h2>3. Base legal e consentimento</h2>
+        <p>O tratamento dos seus dados ocorre mediante o seu <strong>consentimento</strong>, manifestado ao marcar a caixa de aceite no formulário, e/ou para execução de procedimentos preliminares e do serviço solicitado. Você pode revogar o consentimento a qualquer momento, conforme a seção 7.</p>
+
+        <h2>4. Compartilhamento de dados</h2>
+        <p>Não vendemos os seus dados. Eles podem ser compartilhados apenas: (i) com profissionais e parceiros necessários à prestação do serviço (por exemplo, advogado(a) responsável por eventual medida judicial); (ii) com fornecedores de tecnologia que operam o site sob obrigação de confidencialidade; e (iii) quando exigido por lei ou autoridade competente.</p>
+
+        <h2>5. Cookies e tecnologias de rastreamento</h2>
+        <p>Este site pode utilizar cookies e ferramentas como Google Tag Manager e Meta Pixel para análise de tráfego e campanhas publicitárias. Você pode gerenciar ou desativar cookies nas configurações do seu navegador.</p>
+
+        <h2>6. Armazenamento e segurança</h2>
+        <p>Adotamos medidas técnicas e organizacionais razoáveis para proteger os seus dados contra acesso não autorizado, perda ou uso indevido. Os dados são mantidos apenas pelo tempo necessário às finalidades descritas ou pelo prazo exigido por lei.</p>
+
+        <h2>7. Seus direitos como titular</h2>
+        <p>Nos termos da LGPD, você pode, a qualquer momento, solicitar: confirmação da existência de tratamento; acesso, correção, anonimização ou exclusão dos dados; portabilidade; informação sobre compartilhamento; e revogação do consentimento. Para exercer esses direitos, entre em contato pelos canais indicados abaixo.</p>
+
+        <h2>8. Contato do controlador</h2>
+        <p>Para dúvidas ou solicitações relacionadas a esta Política e aos seus dados, fale com a G7 Assessoria:</p>
+        <ul class="bullets" id="legal-contacts">
+          <li>E-mail: <span class="tpl-flag">PREENCHER</span></li>
+          <li>WhatsApp/Telefone: <span class="tpl-flag">PREENCHER</span></li>
+          <li>Endereço: <span class="tpl-flag">PREENCHER</span></li>
+          <li>CNPJ: <span class="tpl-flag">PREENCHER</span></li>
+        </ul>
+
+        <h2>9. Alterações nesta Política</h2>
+        <p>Esta Política pode ser atualizada periodicamente. A versão vigente estará sempre disponível nesta página, com a data da última atualização.</p>
+
+        <p style="margin-top:2em; color:var(--text-muted); font-size:.9rem;"><em>Observação: este documento é um modelo informativo e deve ser revisado por profissional jurídico antes da publicação definitiva, especialmente quanto à indicação do controlador, do encarregado (DPO), se houver, e dos prazos de retenção aplicáveis.</em></p>
+      </div>
+    </div>
+  </div></div>
+<script>function abrirPriv(e){if(e)e.preventDefault();document.getElementById("privOverlay").style.display="block";document.body.style.overflow="hidden";}function fecharPriv(){document.getElementById("privOverlay").style.display="none";document.body.style.overflow="";}document.addEventListener("click",function(e){if(e.target.id==="privOverlay")fecharPriv();});</script>
 </body>
 </html>
